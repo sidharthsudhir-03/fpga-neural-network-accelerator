@@ -69,20 +69,6 @@ To improve throughput, the accelerator utilizes on-chip SRAM buffers to cache ac
 
 ---
 
-## My Contributions
-
-* Designed and implemented custom hardware accelerators in SystemVerilog
-* Developed Avalon master/slave interfaces for accelerator integration
-* Implemented fixed-point dot-product computation hardware
-* Designed DMA-style memory transfer hardware
-* Integrated SDRAM and on-chip SRAM memory subsystems
-* Implemented memory reuse optimizations for improved performance
-* Integrated custom accelerators into a Nios II SoC platform
-* Verified functionality through Quartus compilation and hardware implementation
-* Implemented and tested the complete system on the Intel DE1-SoC FPGA
-
----
-
 ## Key Features
 
 * FPGA-based neural network acceleration
