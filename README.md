@@ -1,16 +1,14 @@
 # FPGA Neural Network Accelerator
 
-Q16.16 fixed-point neural network accelerator implemented on the Intel DE1-SoC FPGA. The project accelerates matrix-vector computations used in neural network inference through custom hardware IP blocks integrated into a Nios II System-on-Chip (SoC) platform.
+Q16.16 fixed-point neural network accelerator implemented on the Intel DE1-SoC FPGA. The project combines custom hardware accelerators, on-chip memory optimization, and a Nios II System-on-Chip (SoC) platform to accelerate neural network inference for MNIST handwritten digit classification.
 
 ---
 
 ## Overview
 
-This project explores the design and implementation of a hardware-accelerated neural network inference system on FPGA. The system combines a Nios II soft-core processor, external SDRAM, on-chip SRAM, and custom hardware accelerators connected through the Avalon interconnect.
+This project explores the design and implementation of a hardware-accelerated neural network inference system on FPGA. The design integrates custom SystemVerilog accelerators with a Nios II soft-core processor, external SDRAM, and on-chip SRAM to efficiently perform matrix-vector computations commonly found in deep neural networks.
 
-The accelerator performs fixed-point dot-product operations used in fully connected neural network layers and was optimized through data reuse techniques to reduce memory access overhead. The final design supports inference for an MNIST handwritten digit classification network using Q16.16 fixed-point arithmetic.
-
-The project was implemented on the Intel DE1-SoC FPGA platform using SystemVerilog and verified using ModelSim.
+The accelerator offloads computationally intensive operations from the processor and leverages fixed-point arithmetic and memory reuse techniques to improve performance. The complete system was implemented and validated on the Intel DE1-SoC FPGA platform.
 
 ---
 
@@ -32,11 +30,10 @@ Avalon Interconnect
  │      │             │
  ▼      ▼             ▼
 DMA   SRAM Bank 0   SRAM Bank 1
-Copy
 Engine
  │
  ▼
-Optimized Dot Product Accelerator
+Fixed-Point Dot Product Accelerator
  │
  ▼
 Neural Network Inference
@@ -47,74 +44,79 @@ Digit Classification Result
 
 ---
 
-## Design Evolution
+## Architecture
 
-### Task 5 – DMA Memory Copy Accelerator
+The system is built around a custom fixed-point dot-product engine integrated into a Nios II SoC platform. Neural network weights, activations, and intermediate results are stored in external SDRAM and accessed through Avalon memory-mapped interfaces.
 
-Implemented a DMA-style memory copy engine capable of transferring data between memory regions without processor involvement.
+To improve performance, the design incorporates dedicated hardware for memory transfers and on-chip SRAM buffers that cache frequently accessed activation data. This reduces external memory traffic and improves accelerator throughput through data reuse.
 
-Features:
-
-- Avalon master/slave interfaces
-- SDRAM read/write support
-- CPU-offloaded memory transfers
-- Configurable source and destination addresses
+The resulting architecture combines software control running on the Nios II processor with custom FPGA hardware accelerators to efficiently execute neural network inference workloads.
 
 ---
 
-### Task 6 – Dot Product Accelerator
+## Accelerator Components
 
-Implemented a hardware accelerator for fixed-point vector dot-product computation.
+### Memory Transfer Engine
 
-Features:
-
-- Q16.16 fixed-point arithmetic
-- Avalon memory-mapped interface
-- SDRAM-based operand fetching
-- Hardware multiply-accumulate engine
-- CPU-accessible result interface
-
----
-
-### Task 7 – Optimized Dot Product Accelerator
-
-Enhanced the original accelerator by introducing data reuse and on-chip memory buffering.
+A custom DMA-style memory transfer engine enables bulk movement of data between memory regions without continuous processor intervention.
 
 Features:
 
-- Dual Avalon master interfaces
-- Concurrent SDRAM and SRAM accesses
-- On-chip activation caching
-- Reduced memory traffic
-- Improved throughput through data reuse
+* Avalon master/slave interfaces
+* SDRAM read/write support
+* Hardware-managed memory transfers
+* Reduced processor overhead
+
+### Fixed-Point Dot Product Engine
+
+The core computation engine performs Q16.16 fixed-point dot-product operations used in neural network inference.
+
+Features:
+
+* Fixed-point multiply-accumulate datapath
+* Hardware acceleration of matrix-vector operations
+* Avalon memory-mapped control interface
+* External memory operand fetching
+
+### Optimized Memory Architecture
+
+To improve throughput, the accelerator utilizes on-chip SRAM buffers to cache activation data and reduce repeated SDRAM accesses.
+
+Features:
+
+* Activation reuse optimization
+* On-chip buffering
+* Reduced memory bandwidth requirements
+* Concurrent memory access architecture
 
 ---
 
 ## My Contributions
 
-- Designed and implemented the DMA memory copy accelerator
-- Designed and implemented fixed-point dot-product accelerator IP blocks
-- Developed Avalon master/slave interfaces
-- Implemented SDRAM and SRAM memory interactions
-- Added data reuse optimizations through on-chip memory buffering
-- Integrated custom accelerators into a Nios II SoC platform
-- Verified functionality using ModelSim simulation
-- Implemented and tested the complete design on Intel DE1-SoC FPGA hardware
+* Designed and implemented custom hardware accelerators in SystemVerilog
+* Developed Avalon master/slave interfaces for accelerator integration
+* Implemented fixed-point dot-product computation hardware
+* Designed DMA-style memory transfer hardware
+* Integrated SDRAM and on-chip SRAM memory subsystems
+* Implemented memory reuse optimizations for improved performance
+* Integrated custom accelerators into a Nios II SoC platform
+* Verified functionality using ModelSim simulation
+* Implemented and tested the complete system on the Intel DE1-SoC FPGA
 
 ---
 
 ## Key Features
 
-- FPGA-based neural network acceleration
-- Q16.16 fixed-point arithmetic
-- Hardware matrix-vector multiplication
-- Custom Avalon IP development
-- SDRAM integration
-- On-chip SRAM caching
-- Data reuse optimization
-- DMA-style memory transfer engine
-- Nios II soft-core processor integration
-- MNIST digit classification
+* FPGA-based neural network acceleration
+* Q16.16 fixed-point arithmetic
+* Custom Avalon IP development
+* Hardware/software co-design
+* Nios II SoC integration
+* SDRAM and SRAM memory hierarchy
+* DMA-style memory transfer engine
+* Matrix-vector acceleration
+* Memory reuse optimization
+* MNIST digit classification inference
 
 ---
 
@@ -122,29 +124,29 @@ Features:
 
 ### FPGA Development
 
-- Intel DE1-SoC FPGA
-- Intel Quartus Prime
-- Platform Designer (Qsys)
+* Intel DE1-SoC FPGA
+* Intel Quartus Prime
+* Platform Designer (Qsys)
 
 ### Hardware Design
 
-- SystemVerilog
-- RTL Design
-- FSM Design
-- Fixed-Point Arithmetic
+* SystemVerilog
+* RTL Design
+* FSM Design
+* Fixed-Point Arithmetic
 
 ### Verification
 
-- ModelSim
-- Unit Testing
-- Functional Verification
+* ModelSim
+* Functional Verification
+* Unit Testing
 
-### SoC Development
+### Embedded Systems
 
-- Nios II Soft Processor
-- Avalon Memory-Mapped Interfaces
-- SDRAM Controllers
-- On-Chip SRAM
+* Nios II Soft Processor
+* Avalon Memory-Mapped Interfaces
+* SDRAM Controllers
+* On-Chip SRAM
 
 ---
 
@@ -153,16 +155,11 @@ Features:
 ```text
 fpga-neural-network-accelerator/
 ├── rtl/
-│
 ├── tb/
-│
 ├── software/
-│
 ├── reports/
-│
 ├── results/
 │   └── simulation/
-│
 └── README.md
 ```
 
@@ -170,22 +167,12 @@ fpga-neural-network-accelerator/
 
 ## Learning Outcomes
 
-- FPGA-based machine learning acceleration
-- Hardware/software co-design
-- SoC architecture and integration
-- Avalon protocol implementation
-- SDRAM and SRAM memory systems
-- Fixed-point numerical computation
-- Hardware acceleration techniques
-- Data reuse and memory optimization
-- RTL design and verification
-- Embedded FPGA development
-
----
-
-## References
-
-- Intel DE1-SoC FPGA Platform
-- Nios II Soft-Core Processor
-- Avalon Memory-Mapped Interface
-- MNIST Handwritten Digit Dataset
+* FPGA-based machine learning acceleration
+* Hardware/software co-design
+* Computer architecture and SoC integration
+* Memory hierarchy optimization
+* Fixed-point numerical computation
+* Custom accelerator design
+* Avalon protocol implementation
+* RTL design and verification
+* Embedded FPGA development
