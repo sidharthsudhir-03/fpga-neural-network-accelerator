@@ -8,39 +8,17 @@ Q16.16 fixed-point neural network accelerator implemented on the Intel DE1-SoC F
 
 This project explores the design and implementation of a hardware-accelerated neural network inference system on FPGA. The design integrates custom SystemVerilog accelerators with a Nios II soft-core processor, external SDRAM, and on-chip SRAM to efficiently perform matrix-vector computations commonly found in deep neural networks.
 
-The accelerator offloads computationally intensive operations from the processor and leverages fixed-point arithmetic and memory reuse techniques to improve performance. The complete system was implemented and validated on the Intel DE1-SoC FPGA platform.
+The accelerator offloads computationally intensive operations from the processor and leverages fixed-point arithmetic and memory reuse techniques to improve performance. The complete system was implemented, synthesized, and validated on the Intel DE1-SoC FPGA platform.
 
 ---
 
 ## System Architecture
 
-```text
-MNIST Input Image
-        │
-        ▼
-External SDRAM
-        │
-        ▼
-Nios II Processor
-        │
-        ▼
-Avalon Interconnect
-        │
- ┌──────┼─────────────┐
- │      │             │
- ▼      ▼             ▼
-DMA   SRAM Bank 0   SRAM Bank 1
-Engine
- │
- ▼
-Fixed-Point Dot Product Accelerator
- │
- ▼
-Neural Network Inference
- │
- ▼
-Digit Classification Result
-```
+![Platform Designer System](results/system_architecture/qsys_system.png)
+
+The accelerator is integrated into a Nios II System-on-Chip architecture built using Intel Platform Designer (Qsys). The system combines a custom fixed-point dot-product accelerator, a dedicated memory transfer engine, external SDRAM, and on-chip SRAM connected through Avalon memory-mapped interfaces.
+
+The Nios II processor coordinates neural network execution while computationally intensive matrix-vector operations are offloaded to custom hardware accelerators. On-chip memory is used to cache activation data and reduce external memory accesses, improving throughput through data reuse.
 
 ---
 
@@ -60,7 +38,7 @@ The resulting architecture combines software control running on the Nios II proc
 
 A custom DMA-style memory transfer engine enables bulk movement of data between memory regions without continuous processor intervention.
 
-Features:
+**Features**
 
 * Avalon master/slave interfaces
 * SDRAM read/write support
@@ -71,7 +49,7 @@ Features:
 
 The core computation engine performs Q16.16 fixed-point dot-product operations used in neural network inference.
 
-Features:
+**Features**
 
 * Fixed-point multiply-accumulate datapath
 * Hardware acceleration of matrix-vector operations
@@ -82,12 +60,28 @@ Features:
 
 To improve throughput, the accelerator utilizes on-chip SRAM buffers to cache activation data and reduce repeated SDRAM accesses.
 
-Features:
+**Features**
 
 * Activation reuse optimization
 * On-chip buffering
 * Reduced memory bandwidth requirements
 * Concurrent memory access architecture
+
+---
+
+## My Contributions
+
+* Designed and implemented custom hardware accelerators in SystemVerilog
+* Developed Avalon master/slave interfaces for accelerator integration
+* Implemented fixed-point dot-product computation hardware
+* Designed DMA-style memory transfer hardware
+* Integrated SDRAM and on-chip SRAM memory subsystems
+* Implemented memory reuse optimizations for improved performance
+* Integrated custom accelerators into a Nios II SoC platform
+* Verified functionality through Quartus compilation and hardware implementation
+* Implemented and tested the complete system on the Intel DE1-SoC FPGA
+
+---
 
 ## Key Features
 
@@ -104,26 +98,45 @@ Features:
 
 ---
 
+## Implementation Results
+
+| Metric            | Value                     |
+| ----------------- | ------------------------- |
+| FPGA Platform     | Intel DE1-SoC (Cyclone V) |
+| Logic Utilization | 1,490 ALMs                |
+| Registers         | 1,919                     |
+| Memory Usage      | 492,672 bits              |
+| RAM Blocks        | 66                        |
+| DSP Blocks        | 3                         |
+| PLLs              | 2                         |
+| Worst Setup Slack | 11.619 ns                 |
+| Worst Hold Slack  | 0.120 ns                  |
+| Timing Closure    | Passed                    |
+
+---
+
+## Verification and Validation
+
+The design was validated through Quartus compilation, timing analysis, Platform Designer integration, and FPGA implementation on the Intel DE1-SoC platform.
+
+Functional validation focused on hardware synthesis, timing closure, and successful integration of custom accelerators within the Nios II SoC architecture. The final implementation met timing requirements and successfully fit within the target Cyclone V FPGA resources.
+
+---
+
 ## Technologies Used
 
 ### FPGA Development
 
 * Intel DE1-SoC FPGA
 * Intel Quartus Prime
-* Platform Designer (Qsys)
+* Intel Platform Designer (Qsys)
 
 ### Hardware Design
 
 * SystemVerilog
 * RTL Design
-* FSM Design
+* Finite State Machine Design
 * Fixed-Point Arithmetic
-
-### Verification
-
-* ModelSim
-* Functional Verification
-* Unit Testing
 
 ### Embedded Systems
 
@@ -131,6 +144,12 @@ Features:
 * Avalon Memory-Mapped Interfaces
 * SDRAM Controllers
 * On-Chip SRAM
+
+### Verification
+
+* Quartus Timing Analyzer
+* Resource Utilization Analysis
+* Hardware Validation
 
 ---
 
@@ -143,6 +162,8 @@ fpga-neural-network-accelerator/
 ├── software/
 ├── reports/
 ├── results/
+│   ├── system_architecture/
+│   ├── implementation/
 │   └── simulation/
 └── README.md
 ```
@@ -160,3 +181,4 @@ fpga-neural-network-accelerator/
 * Avalon protocol implementation
 * RTL design and verification
 * Embedded FPGA development
+* Performance optimization through data reuse
