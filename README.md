@@ -157,14 +157,26 @@ Functional validation focused on hardware synthesis, timing closure, and success
 
 ```text
 fpga-neural-network-accelerator/
-├── rtl/
-├── tb/
-├── software/
+├── data/
+│   └── MNIST test data and neural-network parameter files
 ├── reports/
+│   └── Quartus compilation, timing, and resource reports
 ├── results/
 │   ├── system_architecture/
 │   ├── implementation/
 │   └── simulation/
+├── rtl/
+│   └── Custom SystemVerilog accelerator modules
+├── scripts/
+│   └── Python script for training/running the DNN model
+├── settings/
+│   └── Quartus project settings and timing constraints
+├── software/
+│   └── Nios II C code for inference and accelerator control
+├── tb/
+│   └── Testbench files, only for wordcopy module
+├── vga-core/
+│   └── Modified 8-bit grayscale VGA adapter
 └── README.md
 ```
 
