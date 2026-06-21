@@ -14,7 +14,7 @@ The accelerator offloads computationally intensive operations from the processor
 
 ## System Architecture
 
-![Platform Designer System](results/system_architecture/qsys_system.png)
+![Platform Designer System](results/system_architecture/qsys_system.jpeg)
 
 The accelerator is integrated into a Nios II System-on-Chip architecture built using Intel Platform Designer (Qsys). The system combines a custom fixed-point dot-product accelerator, a dedicated memory transfer engine, external SDRAM, and on-chip SRAM connected through Avalon memory-mapped interfaces.
 
